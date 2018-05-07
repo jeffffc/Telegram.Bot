@@ -77,7 +77,7 @@ namespace Telegram.Bot.Tests.Integ.Sending_Messages
             await _fixture.SendTestCaseNotificationAsync(FactTitles.ShouldSendFileIdPhotosInAlbum);
 
             string[] fileIds = _classFixture.Entities
-                .Select(msg => msg.Photo.First().FileId)
+                .Select(msg => msg.Photo[0].FileId)
                 .ToArray();
 
             Message[] messages = await BotClient.SendMediaGroupAsync(
@@ -106,7 +106,7 @@ namespace Telegram.Bot.Tests.Integ.Sending_Messages
 
             const string url1 = "https://cdn.pixabay.com/photo/2017/06/20/19/22/fuchs-2424369_640.jpg";
             const string url2 = "https://cdn.pixabay.com/photo/2017/04/11/21/34/giraffe-2222908_640.jpg";
-            int replyToMessageId = _classFixture.Entities.First().MessageId;
+            int replyToMessageId = _classFixture.Entities[0].MessageId;
 
             Message[] messages = await BotClient.SendMediaGroupAsync(
                 chatId: _fixture.SupergroupChat.Id,
@@ -173,9 +173,9 @@ namespace Telegram.Bot.Tests.Integ.Sending_Messages
             Assert.All(messages.Take(2), msg => Assert.Equal(MessageType.Video, msg.Type));
             Assert.Equal(MessageType.Photo, messages.Last().Type);
             Assert.Equal(captions, messages.Select(msg => msg.Caption));
-            Assert.Equal(firstMediaWidthAndHeight, messages.First().Video.Width);
-            Assert.Equal(firstMediaWidthAndHeight, messages.First().Video.Height);
-            Assert.InRange(messages.First().Video.Duration, firstMediaDuration - 2, firstMediaDuration + 2);
+            Assert.Equal(firstMediaWidthAndHeight, messages[0].Video.Width);
+            Assert.Equal(firstMediaWidthAndHeight, messages[0].Video.Height);
+            Assert.InRange(messages[0].Video.Duration, firstMediaDuration - 2, firstMediaDuration + 2);
         }
 
         [OrderedFact(DisplayName = FactTitles.ShouldUpload2PhotosAlbumWithMarkdownEncodedCaptions)]

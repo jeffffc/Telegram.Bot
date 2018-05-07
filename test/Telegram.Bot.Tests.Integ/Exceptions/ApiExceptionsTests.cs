@@ -120,6 +120,7 @@ namespace Telegram.Bot.Tests.Integ.Exceptions
         public async Task Should_Throw_Exception_QueryIdInvalidException()
         {
             await _fixture.SendTestCaseNotificationAsync(FactTitles.ShouldThrowExceptionInvalidQueryIdException,
+                 "Start typing to invoke inline request",
                 startInlineQuery: true);
 
             Update queryUpdate = await _fixture.UpdateReceiver.GetInlineQueryUpdateAsync();

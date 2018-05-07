@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -99,27 +98,27 @@ namespace Telegram.Bot.Tests.Integ.Sending_Messages
             await _fixture.SendTestCaseNotificationAsync(FactTitles.ShouldParseMarkDownEntities);
 
             const string url = "https://telegram.org/";
-            Dictionary<MessageEntityType, string> entityValueMappings = new Dictionary<MessageEntityType, string>
+            (MessageEntityType Type, string Value)[] entityValueMappings =
             {
-                {MessageEntityType.Bold, "*bold*"},
-                {MessageEntityType.Italic, "_italic_"},
-                {MessageEntityType.TextLink, $"[inline url to Telegram.org]({url})"},
-                {
+                (MessageEntityType.Bold, "*bold*"),
+                (MessageEntityType.Italic, "_italic_"),
+                (MessageEntityType.TextLink, $"[inline url to Telegram.org]({url})"),
+                (
                     MessageEntityType.TextMention,
                     $"[{_fixture.BotUser.Username.Replace("_", @"\_")}](tg://user?id={_fixture.BotUser.Id})"
-                },
-                {MessageEntityType.Code, @"inline ""`fixed-width code`"""},
-                {MessageEntityType.Pre, "```pre-formatted fixed-width code block```"},
+                ),
+                (MessageEntityType.Code, @"inline ""`fixed-width code`"""),
+                (MessageEntityType.Pre, "```pre-formatted fixed-width code block```"),
             };
 
             Message message = await BotClient.SendTextMessageAsync(
                 chatId: _fixture.SupergroupChat.Id,
-                text: string.Join("\n", entityValueMappings.Values),
+                text: string.Join("\n", entityValueMappings.Select(evm => evm.Value)),
                 parseMode: ParseMode.Markdown,
                 disableWebPagePreview: true
             );
 
-            Assert.Equal(entityValueMappings.Keys, message.Entities.Select(e => e.Type));
+            Assert.Equal(entityValueMappings.Select(evm => evm.Type), message.Entities.Select(e => e.Type));
             Assert.Equal(url, message.Entities.Single(e => e.Type == MessageEntityType.TextLink).Url);
             Assert.True(JToken.DeepEquals(
                 JToken.FromObject(_fixture.BotUser),
