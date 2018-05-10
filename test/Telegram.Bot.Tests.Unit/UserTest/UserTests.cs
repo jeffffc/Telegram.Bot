@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Telegram.Bot.Types;
 using Xunit;
 
-namespace Telegram.Bot.Tests.Unit
+namespace Telegram.Bot.Tests.Unit.UserTest
 {
     public class UserTests
     {
-        [Fact]
+        [Fact(DisplayName ="Should convert User object to string")]
         public void Should_ToString()
         {
             Assert.Equal("@alicebot (12345)", new User
@@ -35,7 +35,7 @@ namespace Telegram.Bot.Tests.Unit
             }.ToString());
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should deserialize User object")]
         public void Should_Add_To_Dict()
         {
             const int id1 = 12345;
