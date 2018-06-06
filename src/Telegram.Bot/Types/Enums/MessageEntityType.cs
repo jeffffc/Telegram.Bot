@@ -67,5 +67,17 @@ namespace Telegram.Bot.Types.Enums
         /// </summary>
         [EnumMember(Value = "text_mention")]
         TextMention,
+        
+        /// <summary>
+        /// Phone Numbers
+        /// </summary>
+        [EnumMember(Value = "phone_number")]
+        PhoneNumber,
+        
+        /// <summary>
+        /// Cash Tags
+        /// </summary>
+        [EnumMember(Value = "cashtag")]
+        CashTag,
     }
 }
